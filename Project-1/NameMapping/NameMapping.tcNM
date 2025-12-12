@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root Signature="{5DCBAC3B-D39C-497C-9BE8-744CBADD37AA}" NameMappingVersion="7" SaveImages="0">
+	<Storages Current="0">
+		<Child Name="Default Configuration" />
+	</Storages>
+	<Nodes Name="NameMapping" Key="{BE401E45-B2D6-4FBA-931A-C2117D5C51AD}">
+		<Children>
+			<Child Name="Sys" Key="{A5A98345-8E3E-458F-AA4D-2CFE8BCE9C88}">
+				<Properties>
+					<Property Name="Name">
+						<Value Value="Sys" />
+					</Property>
+				</Properties>
+				<Children>
+					<Child Name="browser" Key="{2B010BA9-9654-4476-88A0-7EECD0727930}">
+						<Properties>
+							<Property Name="ObjectType">
+								<Value Value="Browser" />
+							</Property>
+						</Properties>
+						<Children>
+							<Child Name="BrowserWindow" Key="{3C96F538-4E1F-4C1D-BA9D-AA7B7992BBF9}">
+								<Image FileName="-1985054824" Left="-11" Top="-11" Right="1931" Bottom="1019" />
+								<Properties>
+									<Property Name="ObjectType">
+										<Value Value="BrowserWindow" />
+									</Property>
+									<Property Name="ObjectIdentifier">
+										<Value Value="0" Type="0" />
+									</Property>
+								</Properties>
+							</Child>
+							<Child Name="pageSoftwareTestingMonitoringDev" Key="{11203C9F-6259-4560-91FC-8C912734721F}">
+								<Image FileName="-1985054824" Left="6" Top="111" Right="1914" Bottom="1002" />
+								<Properties>
+									<Property Name="ObjectType">
+										<Value Value="Page" />
+									</Property>
+									<Property Name="URL">
+										<Value Value="https://smartbear.com/" />
+									</Property>
+								</Properties>
+								<Children>
+									<Child Name="form" Key="{28AC9950-D8E5-4C3C-8387-77E4A41E7D0E}">
+										<Image FileName="-1985054824" Left="6" Top="111" Right="1891" Bottom="13740" />
+										<Selectors>
+											<Selector>
+												<Value Value="#form" />
+											</Selector>
+											<Selector>
+												<Value Value="form[contains(., &apos;AI&apos;)]" />
+											</Selector>
+											<Selector>
+												<Value Value="form[@action=&apos;/&apos;]" />
+											</Selector>
+											<Selector>
+												<Value Value="form" />
+											</Selector>
+										</Selectors>
+									</Child>
+									<Child Name="sectionBuildBetter" Key="{7AE525A7-1960-42DE-B1C2-25AD710E6F39}">
+										<Image FileName="-1985054824" Left="6" Top="209" Right="1891" Bottom="1024" />
+										<Selectors>
+											<Selector>
+												<Value Value="//section[contains(., &apos;Build Better&apos;)]" />
+											</Selector>
+											<Selector>
+												<Value Value="//section[contains(@class, &apos;hero-section&apos;)]" />
+											</Selector>
+										</Selectors>
+									</Child>
+									<Child Name="linkExploreProducts" Key="{76EEA8C7-2AFC-40E7-B396-06EE80E08D6B}">
+										<Image FileName="-1985054824" Left="703" Top="740" Right="973" Bottom="814" />
+										<TypeInfo Item0="{DEB386E3-F946-4000-89F6-3B14C0FD4B88}" />
+										<Selectors>
+											<Selector>
+												<Value Value="//a[.=&apos;Explore Products&apos;]" />
+											</Selector>
+											<Selector>
+												<Value Value="//form/div[5]/main/section//a[contains(@class, &apos;c-btn&apos;)]" />
+											</Selector>
+											<Selector>
+												<Value Value="//form/div[5]/main/section//a" />
+											</Selector>
+										</Selectors>
+									</Child>
+								</Children>
+							</Child>
+						</Children>
+					</Child>
+				</Children>
+			</Child>
+		</Children>
+	</Nodes>
+	<LogicalNodes Name="Aliases" Owner="{BE401E45-B2D6-4FBA-931A-C2117D5C51AD}">
+		<Child Name="browser" Owner="{2B010BA9-9654-4476-88A0-7EECD0727930}">
+			<Child Name="BrowserWindow" Owner="{3C96F538-4E1F-4C1D-BA9D-AA7B7992BBF9}" />
+			<Child Name="pageSoftwareTestingMonitoringDev" Owner="{11203C9F-6259-4560-91FC-8C912734721F}">
+				<Child Name="form" Owner="{28AC9950-D8E5-4C3C-8387-77E4A41E7D0E}">
+					<Child Name="sectionBuildBetter" Owner="{7AE525A7-1960-42DE-B1C2-25AD710E6F39}">
+						<Child Name="linkExploreProducts" Owner="{76EEA8C7-2AFC-40E7-B396-06EE80E08D6B}" />
+					</Child>
+				</Child>
+			</Child>
+		</Child>
+	</LogicalNodes>
+</Root>
