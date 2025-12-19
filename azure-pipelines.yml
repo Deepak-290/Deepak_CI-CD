@@ -7,13 +7,9 @@ trigger:
 - main
 
 pool:
-name: My_Local_Agent
+  name: My_Local_Agent
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: echo Hello from my local agent
+  displayName: HelloWorld
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
