@@ -2,7 +2,6 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -13,12 +12,18 @@ steps:
 - checkout: self
 
 - script: |
-    echo Workspace:
-    cd
-    echo.
-    echo Files:
-    dir
-  displayName: Verify repo is cloned
+    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
+    "$(Build.SourcesDirectory)\Project-1\Project-1.pjs" ^
+    /run ^
+    /exit ^
+    /SilentMode
+  displayName: "Run TestComplete Project"
+
+
+
+
+
+
 
 
 
