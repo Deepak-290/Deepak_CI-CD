@@ -10,30 +10,15 @@ pool:
 
 steps:
 - checkout: self
-  clean: true
 
-# ==============================
-# Run TestComplete Project
-# ==============================
 - script: |
-    echo ===== Running TestComplete =====
-
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
-      "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" ^
-      /run ^
-      /exit ^
-      /SilentMode
-  displayName: "Run TestComplete Tests"
+    "$(Build.SourcesDirectory)\Project-1\Project-1.pjs" ^
+    /run ^
+    /exit ^
+    /SilentMode
+  displayName: "Run TestComplete Project"
 
-# ==============================
-# Publish TestComplete Logs
-# ==============================
-- task: PublishBuildArtifacts@1
-  displayName: "Publish TestComplete Results"
-  inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)\Project-1\Logs'
-    ArtifactName: 'TestComplete_Results'
-    publishLocation: 'Container'
 
 
 
