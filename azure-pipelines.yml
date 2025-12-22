@@ -13,21 +13,20 @@ steps:
   clean: true
 
 - script: |
-    echo ===== Workspace =====
+    echo ===== BUILD_SOURCESDIRECTORY =====
     echo %BUILD_SOURCESDIRECTORY%
+    echo.
+    echo ===== Top-level folders =====
     dir "%BUILD_SOURCESDIRECTORY%"
-  displayName: "Verify repo cloned"
+    echo.
+    echo ===== Inside each folder =====
+    for /d %%i in ("%BUILD_SOURCESDIRECTORY%\*") do (
+      echo Folder: %%~nxi
+      dir "%%i"
+      echo.
+    )
+  displayName: "DEBUG: Show exact folder & file names"
 
-- script: |
-    echo ===== Running TestComplete =====
-    cd "%BUILD_SOURCESDIRECTORY%\Project-1"
-
-    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
-      "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" ^
-      /run ^
-      /exit ^
-      /SilentMode
-  displayName: "Run TestComplete Project"
 
 
 
