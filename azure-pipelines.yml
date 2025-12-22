@@ -12,11 +12,9 @@ steps:
 - checkout: self
   clean: true
 
-- script: |
-    echo ===== Verifying Project Path =====
-    dir "%BUILD_SOURCESDIRECTORY%\Project-1"
-  displayName: "Verify Project-1 exists"
-
+# ==============================
+# Run TestComplete Project
+# ==============================
 - script: |
     echo ===== Running TestComplete =====
 
@@ -25,9 +23,17 @@ steps:
       /run ^
       /exit ^
       /SilentMode
-  displayName: "Run TestComplete Project"
+  displayName: "Run TestComplete Tests"
 
-
+# ==============================
+# Publish TestComplete Logs
+# ==============================
+- task: PublishBuildArtifacts@1
+  displayName: "Publish TestComplete Results"
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)\Project-1\Logs'
+    ArtifactName: 'TestComplete_Results'
+    publishLocation: 'Container'
 
 
 
