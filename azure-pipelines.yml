@@ -2,7 +2,6 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-
 trigger:
 - azure-pipelines
 
@@ -14,12 +13,22 @@ steps:
   clean: true
 
 - script: |
-    echo Workspace path:
+    echo ===== Workspace =====
     echo %BUILD_SOURCESDIRECTORY%
-    echo.
-    echo Repo contents:
     dir "%BUILD_SOURCESDIRECTORY%"
-  displayName: "Verify repo cloned to agent workspace"
+  displayName: "Verify repo cloned"
+
+- script: |
+    echo ===== Running TestComplete =====
+    cd "%BUILD_SOURCESDIRECTORY%\Project-1"
+
+    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
+      "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" ^
+      /run ^
+      /exit ^
+      /SilentMode
+  displayName: "Run TestComplete Project"
+
 
 
 
