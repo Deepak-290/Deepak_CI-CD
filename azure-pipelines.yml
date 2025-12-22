@@ -10,11 +10,13 @@ pool:
   name: My_Local_Agent
 
 steps:
-- script: echo Hello from my local agent
-  displayName: HelloWorld
-
 - script: |
-    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe"
-  displayName: Start TestComplete
+    echo Current directory:
+    cd
+    echo.
+    echo List files:
+    dir
+  displayName: Show workspace root
+
 
 
