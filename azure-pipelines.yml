@@ -4,19 +4,10 @@ pool:
   name: My_Local_Agent
 
 steps:
-- checkout: self
-  clean: true
+- checkout: none
 
 - script: |
-    set LOG_DIR=%BUILD_ARTIFACTSTAGINGDIRECTORY%\TestComplete_Logs
-    mkdir "%LOG_DIR%"
-
-    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" /run /exit /SilentMode
-
-    xcopy "%BUILD_SOURCESDIRECTORY%\Project-1\Logs\*" "%LOG_DIR%\" /E /I /Y
-  displayName: Run TestComplete
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\TestComplete_Logs'
-    ArtifactName: TestComplete_Reports
+    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
+    "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
+    /run /exit /SilentMode
+  displayName: Run TestComplete Project
