@@ -4,21 +4,24 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- azure-pipelines
 
 pool:
   name: My_Local_Agent
 
 steps:
 - checkout: self
+  clean: true
 
 - script: |
-    echo Workspace:
-    cd
+    echo Workspace path:
+    echo %BUILD_SOURCESDIRECTORY%
     echo.
-    echo Files:
-    dir
-  displayName: Verify repo from master branch
+    echo Repo contents:
+    dir "%BUILD_SOURCESDIRECTORY%"
+  displayName: "Verify repo cloned to agent workspace"
+
+
 
 
 
