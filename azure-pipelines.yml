@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- master
 
 pool:
   name: My_Local_Agent
@@ -18,7 +18,8 @@ steps:
     echo.
     echo Files:
     dir
-  displayName: Verify repo is cloned
+  displayName: Verify repo from master branch
+
 
 
 
