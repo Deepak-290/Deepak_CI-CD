@@ -10,13 +10,15 @@ pool:
   name: My_Local_Agent
 
 steps:
+- checkout: self
+
 - script: |
-    echo Current directory:
+    echo Workspace:
     cd
     echo.
-    echo List files:
+    echo Files:
     dir
-  displayName: Show workspace root
+  displayName: Verify repo is cloned
 
 
 
