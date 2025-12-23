@@ -12,23 +12,21 @@ steps:
   clean: true
 
 - script: |
-    echo ================================
-    echo Azure DevOps Workspace
-    echo ================================
+    echo ===== WORKSPACE =====
     echo %BUILD_SOURCESDIRECTORY%
     dir "%BUILD_SOURCESDIRECTORY%"
     dir "%BUILD_SOURCESDIRECTORY%\Project-1"
 
-    echo ================================
-    echo Running TestComplete
-    echo ================================
+    echo ===== RUNNING TESTCOMPLETE =====
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
     "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" ^
     /run ^
     /project:Project-1 ^
+    /test:Test1 ^
     /exit ^
     /SilentMode
-  displayName: Run TestComplete Project-1
+  displayName: Run TestComplete Test1
+
 
 
 
