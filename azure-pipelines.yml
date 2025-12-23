@@ -12,17 +12,24 @@ steps:
 - checkout: none
 
 - script: |
+    REM === Create folders ===
     if not exist "C:\temp\tcLogs" mkdir "C:\temp\tcLogs"
+    if not exist "$(Build.ArtifactStagingDirectory)" mkdir "$(Build.ArtifactStagingDirectory)"
 
+    REM === Run TestComplete and export log ===
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" /run /project:Project-1 /test:"KeywordTests|Test1" /ExportLog:"C:\temp\tcLogs\TestCompleteLog.mht" /SilentMode /Exit
-  displayName: "Run TestComplete Test1 and Export Log"
+
+    REM === Copy log to Azure staging directory ===
+    copy /Y "C:\temp\tcLogs\TestCompleteLog.mht" "$(Build.ArtifactStagingDirectory)\"
+  displayName: "Run TestComplete and collect log"
 
 - task: PublishPipelineArtifact@1
   displayName: "Publish TestComplete Log"
   inputs:
-    targetPath: "C:\temp\tcLogs"
+    targetPath: "$(Build.ArtifactStagingDirectory)"
     artifact: "TestComplete_Logs"
     publishLocation: "pipeline"
+
 
 
 
