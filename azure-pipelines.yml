@@ -9,21 +9,17 @@ pool:
   name: My_Local_Agent
 
 steps:
-# 1️⃣ Install TestComplete Adapter
-- task: SmartBearSoftware.install-testcomplete-adapter-task.InstallTestCompleteAdapter@1
-  displayName: 'Install TestComplete Adapter'
-  inputs:
-    logsLevel: 0
+- checkout: self
 
-# 2️⃣ Run TestComplete via VSTest
 - task: VSTest@3
-  displayName: 'Run TestComplete Project'
+  displayName: 'Run TestComplete Project (Adapter)'
   inputs:
     testSelector: testAssemblies
     testAssemblyVer2: '**\Project-1.pjs'
     searchFolder: '$(Build.SourcesDirectory)'
     pathtoCustomTestAdapters: '$(System.DefaultWorkingDirectory)\TestCompleteAdapter'
     diagnosticsEnabled: true
+
 
 
 
