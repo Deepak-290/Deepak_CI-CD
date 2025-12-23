@@ -11,8 +11,9 @@ steps:
 - script: |
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
     "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
-    /RunExecutionPlan /SilentMode /Exit
-  displayName: "Run TestComplete Execution Plan"
+    /run /runproject /projectitem:Test1 /exit /SilentMode
+  displayName: "Run TestComplete Test1 Directly"
+
 
 
 
