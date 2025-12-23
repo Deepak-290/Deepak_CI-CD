@@ -3,19 +3,78 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 trigger: none
+pr: none
 
 pool:
   name: My_Local_Agent
 
 steps:
+- checkout: none
+
 - script: |
-    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
-    "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
-    /run ^
-    /project:Project-1 ^
-    /SilentMode ^
-    /Exit
-  displayName: "Run TestComplete Execution Plan (Correct Project Context)"
+    REM ===============================
+    REM Go to local TestComplete project
+    REM ===============================
+    cd /d "C:\Users\deepak.mangalagatti\Downloads\Project-1"
+
+    REM ===============================
+    REM OPTIONAL: update from git main
+    REM ===============================
+    git fetch origin
+    git reset --hard origin/main
+
+    REM ===============================
+    REM Go to TestExecute bin
+    REM ===============================
+    cd /d "C:\Program Files (x86)\SmartBear\TestExecute 15\x64\Bin"
+
+    REM ===============================
+    REM User-defined run name
+    REM ===============================
+    set "testName=Project-1_ExecutionPlan"
+
+    REM ===============================
+    REM Timestamp (WMIC)
+    REM ===============================
+    for /f "tokens=2 delims==" %%I in ('wmic os get LocalDateTime /value 2^>nul') do set "ldt=%%I"
+    set "timestamp=%ldt:~0,4%-%ldt:~4,2%-%ldt:~6,2%_%ldt:~8,2%-%ldt:~10,2%-%ldt:~12,2%"
+
+    REM ===============================
+    REM Logs folder
+    REM ===============================
+    if not exist "C:\temp\tcLogs" mkdir "C:\temp\tcLogs"
+    set "logPath=C:\temp\tcLogs\%testName%-%timestamp%.mht"
+
+    REM ===============================
+    REM Run TestExecute (Execution Plan)
+    REM ===============================
+    TestExecute.exe ^
+      "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
+      /run ^
+      /project:Project-1 ^
+      /el:"%logPath%" ^
+      /SilentMode ^
+      /DoNotShowLog
+
+    set "te_exit=%ERRORLEVEL%"
+    echo TestExecute exit code: %te_exit%
+
+    if %te_exit% NEQ 0 exit /b %te_exit%
+
+    REM ===============================
+    REM Stage log for DevOps
+    REM ===============================
+    if not exist "$(Build.ArtifactStagingDirectory)" mkdir "$(Build.ArtifactStagingDirectory)"
+    copy /Y "%logPath%" "$(Build.ArtifactStagingDirectory)\"
+  displayName: "Run TestExecute - Project-1 Scenario"
+
+- task: PublishPipelineArtifact@1
+  displayName: "Publish TestComplete Log"
+  inputs:
+    targetPath: "$(Build.ArtifactStagingDirectory)"
+    artifact: "TestComplete_Logs"
+    publishLocation: "pipeline"
+
 
 
 
