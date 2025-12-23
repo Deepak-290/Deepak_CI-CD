@@ -16,9 +16,11 @@ steps:
     "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
     /run ^
     /project:Project-1 ^
+    /test:"KeywordTests|Test1" ^
     /SilentMode ^
     /Exit
-  displayName: "Run TestComplete Execution Plan"
+  displayName: "Run TestComplete Test1"
+
 
 
 
