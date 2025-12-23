@@ -12,23 +12,22 @@ steps:
 - checkout: none
 
 - script: |
-    REM === Create folders ===
     if not exist "C:\temp\tcLogs" mkdir "C:\temp\tcLogs"
-    if not exist "$(Build.ArtifactStagingDirectory)" mkdir "$(Build.ArtifactStagingDirectory)"
 
-    REM === Run TestComplete and export log ===
-    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" /run /project:Project-1 /test:"KeywordTests|Test1" /ExportLog:"C:\temp\tcLogs\TestCompleteLog.mht" /SilentMode /Exit
+    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
+    "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
+    /run /project:Project-1 /test:"KeywordTests|Test1" ^
+    /ExportLog:"C:\temp\tcLogs\TestResults.xml" ^
+    /SilentMode /Exit
+  displayName: "Run TestComplete Test1"
 
-    REM === Copy log to Azure staging directory ===
-    copy /Y "C:\temp\tcLogs\TestCompleteLog.mht" "$(Build.ArtifactStagingDirectory)\"
-  displayName: "Run TestComplete and collect log"
-
-- task: PublishPipelineArtifact@1
-  displayName: "Publish TestComplete Log"
+- task: PublishTestResults@2
+  displayName: "Publish Test Results"
   inputs:
-    targetPath: "$(Build.ArtifactStagingDirectory)"
-    artifact: "TestComplete_Logs"
-    publishLocation: "pipeline"
+    testResultsFormat: "JUnit"
+    testResultsFiles: "C:\\temp\\tcLogs\\TestResults.xml"
+    testRunTitle: "TestComplete - Project-1"
+
 
 
 
