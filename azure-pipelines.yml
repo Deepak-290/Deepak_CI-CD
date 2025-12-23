@@ -8,10 +8,15 @@ steps:
   clean: true
 
 - script: |
-    echo Starting TestComplete Project
+    echo === Running TestComplete Project ===
+    echo Workspace: %BUILD_SOURCESDIRECTORY%
+    dir "%BUILD_SOURCESDIRECTORY%\Project-1"
+
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
     "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" ^
+    /runexecutionplan ^
     /exit ^
     /SilentMode
-  displayName: Run TestComplete Project
+  displayName: Run Project-1.pjs
+
 
