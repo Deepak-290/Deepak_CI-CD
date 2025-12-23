@@ -11,14 +11,26 @@ pool:
 steps:
 - checkout: self
 
+# Run TestComplete tests via adapter
 - task: VSTest@3
-  displayName: 'Run TestComplete Project (Adapter)'
+  displayName: 'Run TestComplete tests'
   inputs:
     testSelector: testAssemblies
     testAssemblyVer2: '**\Project-1.pjs'
     searchFolder: '$(Build.SourcesDirectory)'
     pathtoCustomTestAdapters: '$(System.DefaultWorkingDirectory)\TestCompleteAdapter'
     diagnosticsEnabled: true
+
+# Publish results (standard Azure DevOps test publishing)
+- task: PublishTestResults@2
+  displayName: 'Publish TestComplete Results'
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
+    mergeTestResults: true
+    failTaskOnFailedTests: false
+
 
 
 
