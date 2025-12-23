@@ -9,21 +9,21 @@ pool:
   name: My_Local_Agent
 
 steps:
-- checkout: none
-
-- script: |
-    if not exist "C:\temp\tcLogs" mkdir "C:\temp\tcLogs"
-
-    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" /run /project:Project-1 /test:"KeywordTests|Test1" /ExportLog:"C:\temp\tcLogs\TestResults.xml" /SilentMode /Exit
-
-  displayName: "Run TestComplete Test1"
-
-- task: PublishTestResults@2
-  displayName: "Publish TestComplete Results"
+# 1️⃣ Install TestComplete Adapter
+- task: SmartBearSoftware.install-testcomplete-adapter-task.InstallTestCompleteAdapter@1
+  displayName: 'Install TestComplete Adapter'
   inputs:
-    testResultsFormat: "JUnit"
-    testResultsFiles: "C:\\temp\\tcLogs\\TestResults.xml"
-    testRunTitle: "TestComplete - Test1"
+    logsLevel: 0
+
+# 2️⃣ Run TestComplete via VSTest
+- task: VSTest@3
+  displayName: 'Run TestComplete Project'
+  inputs:
+    testSelector: testAssemblies
+    testAssemblyVer2: '**\Project-1.pjs'
+    searchFolder: '$(Build.SourcesDirectory)'
+    pathtoCustomTestAdapters: '$(System.DefaultWorkingDirectory)\TestCompleteAdapter'
+    diagnosticsEnabled: true
 
 
 
