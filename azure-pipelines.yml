@@ -14,25 +14,16 @@ steps:
 - script: |
     if not exist "C:\temp\tcLogs" mkdir "C:\temp\tcLogs"
 
-    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
-    "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
-    /run /project:Project-1 /test:"KeywordTests|Test1" ^
-    /ExportLog:"C:\temp\tcLogs\TestResults.xml" ^
-    /SilentMode /Exit
+    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" /run /project:Project-1 /test:"KeywordTests|Test1" /ExportLog:"C:\temp\tcLogs\TestResults.xml" /SilentMode /Exit
+
   displayName: "Run TestComplete Test1"
 
 - task: PublishTestResults@2
-  displayName: "Publish Test Results"
+  displayName: "Publish TestComplete Results"
   inputs:
     testResultsFormat: "JUnit"
     testResultsFiles: "C:\\temp\\tcLogs\\TestResults.xml"
-    testRunTitle: "TestComplete - Project-1"
-
-
-
-
-
-
+    testRunTitle: "TestComplete - Test1"
 
 
 
