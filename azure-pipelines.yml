@@ -12,8 +12,18 @@ steps:
 - checkout: none
 
 - script: |
-    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" /run /project:Project-1 /test:"KeywordTests|Test1" /SilentMode /Exit
-  displayName: "Run TestComplete Test1"
+    if not exist "C:\temp\tcLogs" mkdir "C:\temp\tcLogs"
+
+    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" /run /project:Project-1 /test:"KeywordTests|Test1" /ExportLog:"C:\temp\tcLogs\TestCompleteLog.mht" /SilentMode /Exit
+  displayName: "Run TestComplete Test1 and Export Log"
+
+- task: PublishPipelineArtifact@1
+  displayName: "Publish TestComplete Log"
+  inputs:
+    targetPath: "C:\temp\tcLogs"
+    artifact: "TestComplete_Logs"
+    publishLocation: "pipeline"
+
 
 
 
