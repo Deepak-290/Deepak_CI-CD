@@ -8,18 +8,11 @@ pool:
   name: My_Local_Agent
 
 steps:
-- checkout: self
-  clean: true
-
 - script: |
-    echo "Workspace:"
-    echo %BUILD_SOURCESDIRECTORY%
-    dir "%BUILD_SOURCESDIRECTORY%"
-  displayName: "Verify workspace"
-
-- script: |
+    echo ===== Running TestComplete from LOCAL PATH =====
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
-    "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" ^
+    "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
     /run /exit /SilentMode
-  displayName: "Run TestComplete Project"
+  displayName: "Run TestComplete (Local Project)"
+
 
