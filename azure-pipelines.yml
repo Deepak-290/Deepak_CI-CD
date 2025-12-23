@@ -13,21 +13,14 @@ steps:
 
 - script: |
     echo ===== Workspace =====
-    echo %BUILD_SOURCESDIRECTORY%
-    dir "%BUILD_SOURCESDIRECTORY%"
     dir "%BUILD_SOURCESDIRECTORY%\Project-1"
 
     echo ===== Running TestComplete Execution Plan =====
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
     "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" ^
-    /runexecutionplan ^
+    /projectSuite ^
+    /runexecutionplan:"Default Execution Plan" ^
+    /SilentMode ^
     /exit ^
-    /SilentMode
+    /Log:"%BUILD_SOURCESDIRECTORY%\TC_Logs"
   displayName: Run TestComplete Execution Plan
-
-
-
-
-
-
-
