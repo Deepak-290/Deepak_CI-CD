@@ -8,15 +8,15 @@ pool:
   name: My_Local_Agent
 
 steps:
-- checkout: self
-  clean: true
-
 - script: |
-    echo ===== Running TestComplete Execution Plan =====
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
-    "%BUILD_SOURCESDIRECTORY%\Project-1\Project-1.pjs" ^
-    /run /project:Project-1 /exit /SilentMode
-  displayName: "Run TestComplete (Execution Plan)"
+    "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
+    /run ^
+    /project:Project-1 ^
+    /SilentMode ^
+    /Exit
+  displayName: "Run TestComplete Execution Plan (Correct Project Context)"
+
 
 
 
