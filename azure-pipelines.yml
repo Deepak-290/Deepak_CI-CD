@@ -9,10 +9,10 @@ pool:
 
 steps:
 - script: |
-    echo ===== Running TestComplete from LOCAL PATH =====
     "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
     "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
-    /run /exit /SilentMode
-  displayName: "Run TestComplete (Local Project)"
+    /run /RunExecutionPlan /exit /SilentMode
+  displayName: "Run TestComplete Execution Plan"
+
 
 
