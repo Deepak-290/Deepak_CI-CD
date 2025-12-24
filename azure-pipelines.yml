@@ -5,7 +5,7 @@
 trigger: none
 
 pool:
-  name: Default   # your self-hosted Windows agent
+  name: My_Local_Agent
 
 stages:
 - stage: QA
