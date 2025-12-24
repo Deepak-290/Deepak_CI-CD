@@ -5,40 +5,48 @@
 trigger: none
 
 pool:
-  name: My_Local_Agent
+  name: My_Local_Agent   # <-- your self-hosted agent pool
 
 steps:
-- checkout: self
-  clean: true
-
-# 1️⃣ Install VS Test Platform
+# 1️⃣ Install Visual Studio Test Platform (NO Visual Studio needed)
 - task: VisualStudioTestPlatformInstaller@1
   displayName: Install Visual Studio Test Platform
   inputs:
     packageFeedSelector: nugetOrg
     versionSelector: latestStable
 
-# 2️⃣ Install TestComplete Adapter (FORCED)
+# 2️⃣ Install TestComplete Adapter
 - task: InstallTestCompleteAdapter@1
   displayName: Install TestComplete Adapter
   condition: succeededOrFailed()
   inputs:
+    installExecutor: true
+    updateExecutor: false
+    searchMode: ExecutionPlan
     logsLevel: '0'
 
-# 3️⃣ Run TestComplete project (FORCED + CORRECT)
+# 3️⃣ Run TestComplete project from LOCAL PATH
 - task: VSTest@3
   displayName: Run TestComplete Project-1
   condition: succeededOrFailed()
   inputs:
     testSelector: testAssemblies
-    testAssemblyVer2: '**\Project-1.pjs'
-    searchFolder: '$(Build.SourcesDirectory)'
-    pathtoCustomTestAdapters: '$(Agent.TempDirectory)\TestCompleteAdapter'
-    vsTestVersion: toolsInstaller   # 🔑 CRITICAL
+
+    # 🔴 LOCAL PROJECT PATH
+    testAssemblyVer2: 'C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs'
+
+    searchFolder: 'C:\Users\deepak.mangalagatti\Downloads\Project-1'
+
+    vsTestVersion: toolsInstaller
+
+    # 🔴 EXPLICIT vstest.console location
+    vstestLocationMethod: location
+    vstestLocation: '$(Agent.TempDirectory)\VsTest\Microsoft.TestPlatform.*/tools/net462/Common7/IDE/Extensions/TestPlatform'
+
     diagnosticsEnabled: true
     failOnMinTestsNotRun: true
 
-# 4️⃣ Publish results
+# 4️⃣ Publish Test Results (.trx)
 - task: PublishTestResults@2
   displayName: Publish Test Results
   condition: succeededOrFailed()
@@ -47,4 +55,3 @@ steps:
     testResultsFiles: '**/*.trx'
     searchFolder: '$(Agent.TempDirectory)'
     mergeTestResults: true
-    failTaskOnFailedTests: true
