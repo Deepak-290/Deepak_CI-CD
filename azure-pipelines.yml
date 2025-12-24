@@ -7,54 +7,46 @@ trigger: none
 pool:
   name: My_Local_Agent
 
-stages:
-- stage: QA
-  displayName: Run TestComplete Tests
-  jobs:
-  - job: Run_TestComplete
-    displayName: Execute TestComplete Project
-    timeoutInMinutes: 120
+steps:
+# 1️⃣ Checkout repo
+- checkout: self
+  clean: true
 
-    steps:
-    # Always checkout repo
-    - checkout: self
-      clean: true
+# 2️⃣ Install VS Test Platform (required for vstest)
+- task: VisualStudioTestPlatformInstaller@1
+  displayName: Install Visual Studio Test Platform
+  inputs:
+    packageFeedSelector: nugetOrg
+    versionSelector: latestStable
 
-    # 1️⃣ Install Visual Studio Test Platform (REQUIRED)
-    # Fixes: "No agent found which satisfies vstest"
-    - task: VisualStudioTestPlatformInstaller@1
-      displayName: Install Visual Studio Test Platform
-      inputs:
-        packageFeedSelector: nugetOrg
-        versionSelector: latestStable
+# 3️⃣ Install TestComplete Adapter (FORCE RUN)
+- task: InstallTestCompleteAdapter@1
+  displayName: Install TestComplete Adapter
+  condition: succeededOrFailed()
+  inputs:
+    logsLevel: '0'
 
-    # 2️⃣ Install TestComplete Azure DevOps Adapter
-    - task: InstallTestCompleteAdapter@1
-      displayName: Install TestComplete Adapter
-      inputs:
-        logsLevel: '0'
+# 4️⃣ Run TestComplete project using adapter
+- task: VSTest@3
+  displayName: Run TestComplete Project-1
+  condition: succeededOrFailed()
+  inputs:
+    testSelector: testAssemblies
+    testAssemblyVer2: '**\Project-1.pjs'
+    searchFolder: '$(Build.SourcesDirectory)'
+    pathtoCustomTestAdapters: '$(Agent.TempDirectory)\TestCompleteAdapter'
+    diagnosticsEnabled: true
 
-    # 3️⃣ Run TestComplete project using VSTest
-    - task: VSTest@3
-      displayName: Run TestComplete Project-1
-      inputs:
-        testSelector: testAssemblies
-        testAssemblyVer2: '**\Project-1.pjs'
-        searchFolder: '$(Build.SourcesDirectory)'
-        pathtoCustomTestAdapters: '$(Agent.TempDirectory)\TestCompleteAdapter'
-        diagnosticsEnabled: true
-        failOnMinTestsNotRun: true
-
-    # 4️⃣ Publish Test Results to Azure DevOps Test Runs
-    - task: PublishTestResults@2
-      displayName: Publish Test Results
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFormat: VSTest
-        testResultsFiles: '**/*.trx'
-        searchFolder: '$(Agent.TempDirectory)'
-        mergeTestResults: true
-        failTaskOnFailedTests: true
+# 5️⃣ Publish test results to Azure DevOps
+- task: PublishTestResults@2
+  displayName: Publish Test Results
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: VSTest
+    testResultsFiles: '**/*.trx'
+    searchFolder: '$(Agent.TempDirectory)'
+    mergeTestResults: true
+    failTaskOnFailedTests: true
 
 
 
