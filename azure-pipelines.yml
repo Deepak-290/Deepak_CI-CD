@@ -3,33 +3,59 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 trigger: none
-pr: none
 
 pool:
   name: My_Local_Agent
 
-steps:
-- checkout: self
+stages:
+- stage: QA
+  displayName: Run TestComplete Tests
+  jobs:
+  - job: Run_TestComplete
+    displayName: Execute TestComplete Project
+    timeoutInMinutes: 120
 
-# Run TestComplete tests via adapter
-- task: VSTest@3
-  displayName: 'Run TestComplete tests'
-  inputs:
-    testSelector: testAssemblies
-    testAssemblyVer2: '**\Project-1.pjs'
-    searchFolder: '$(Build.SourcesDirectory)'
-    pathtoCustomTestAdapters: '$(System.DefaultWorkingDirectory)\TestCompleteAdapter'
-    diagnosticsEnabled: true
+    steps:
+    # Always checkout repo
+    - checkout: self
+      clean: true
 
-# Publish results (standard Azure DevOps test publishing)
-- task: PublishTestResults@2
-  displayName: 'Publish TestComplete Results'
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
-    mergeTestResults: true
-    failTaskOnFailedTests: false
+    # 1️⃣ Install Visual Studio Test Platform (REQUIRED)
+    # Fixes: "No agent found which satisfies vstest"
+    - task: VisualStudioTestPlatformInstaller@1
+      displayName: Install Visual Studio Test Platform
+      inputs:
+        packageFeedSelector: nugetOrg
+        versionSelector: latestStable
+
+    # 2️⃣ Install TestComplete Azure DevOps Adapter
+    - task: InstallTestCompleteAdapter@1
+      displayName: Install TestComplete Adapter
+      inputs:
+        logsLevel: '0'
+
+    # 3️⃣ Run TestComplete project using VSTest
+    - task: VSTest@3
+      displayName: Run TestComplete Project-1
+      inputs:
+        testSelector: testAssemblies
+        testAssemblyVer2: '**\Project-1.pjs'
+        searchFolder: '$(Build.SourcesDirectory)'
+        pathtoCustomTestAdapters: '$(Agent.TempDirectory)\TestCompleteAdapter'
+        diagnosticsEnabled: true
+        failOnMinTestsNotRun: true
+
+    # 4️⃣ Publish Test Results to Azure DevOps Test Runs
+    - task: PublishTestResults@2
+      displayName: Publish Test Results
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '**/*.trx'
+        searchFolder: '$(Agent.TempDirectory)'
+        mergeTestResults: true
+        failTaskOnFailedTests: true
+
 
 
 
