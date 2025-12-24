@@ -26,16 +26,18 @@ steps:
     searchMode: ExecutionPlan
     logsLevel: '0'
 
-# 3️⃣ RUN TestComplete project (THIS IS THE FIXED STEP)
+# 3️⃣ Run TestComplete project (FIXED)
 - task: VSTest@3
   displayName: 'Run TestComplete Project-1'
   condition: always()
   inputs:
     testSelector: 'testAssemblies'
-    testAssemblyVer2: '**\Project-1.pjs'
+
+    # 🔴 MUST BE EXPLICIT FILE
+    testAssemblyVer2: 'C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs'
     searchFolder: 'C:\Users\deepak.mangalagatti\Downloads\Project-1'
 
-    # 🔥 REQUIRED FOR SELF-HOSTED AGENT
+    # 🔴 REQUIRED FOR SELF-HOSTED AGENT
     vstestLocationMethod: 'toolsInstaller'
     vsTestVersion: 'toolsInstaller'
 
@@ -43,7 +45,7 @@ steps:
     runInParallel: false
     failOnMinTestsNotRun: false
 
-# 4️⃣ Publish results to Test Runs
+# 4️⃣ Publish test results to Azure DevOps Test Runs
 - task: PublishTestResults@2
   displayName: 'Publish Test Results'
   condition: always()
