@@ -8,36 +8,35 @@ pool:
   name: My_Local_Agent
 
 steps:
-# 1️⃣ Checkout repo
 - checkout: self
   clean: true
 
-# 2️⃣ Install VS Test Platform (required for vstest)
+# 1️⃣ Install VS Test Platform
 - task: VisualStudioTestPlatformInstaller@1
   displayName: Install Visual Studio Test Platform
   inputs:
     packageFeedSelector: nugetOrg
     versionSelector: latestStable
 
-# 3️⃣ Install TestComplete Adapter (FORCE RUN)
+# 2️⃣ Install TestComplete Adapter
 - task: InstallTestCompleteAdapter@1
   displayName: Install TestComplete Adapter
-  condition: succeededOrFailed()
   inputs:
     logsLevel: '0'
 
-# 4️⃣ Run TestComplete project using adapter
+# 3️⃣ Run TestComplete using adapter (FIXED)
 - task: VSTest@3
   displayName: Run TestComplete Project-1
-  condition: succeededOrFailed()
   inputs:
     testSelector: testAssemblies
     testAssemblyVer2: '**\Project-1.pjs'
     searchFolder: '$(Build.SourcesDirectory)'
     pathtoCustomTestAdapters: '$(Agent.TempDirectory)\TestCompleteAdapter'
+    vsTestVersion: toolsInstaller   # 🔥 THIS FIXES EVERYTHING
     diagnosticsEnabled: true
+    failOnMinTestsNotRun: true
 
-# 5️⃣ Publish test results to Azure DevOps
+# 4️⃣ Publish results
 - task: PublishTestResults@2
   displayName: Publish Test Results
   condition: succeededOrFailed()
@@ -47,14 +46,3 @@ steps:
     searchFolder: '$(Agent.TempDirectory)'
     mergeTestResults: true
     failTaskOnFailedTests: true
-
-
-
-
-
-
-
-
-
-
-
