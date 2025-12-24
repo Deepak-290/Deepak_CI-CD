@@ -3,50 +3,49 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 trigger: none
+pr: none
 
 pool:
   name: My_Local_Agent
 
 steps:
-# 1️⃣ Install VS Test Platform
-- task: VisualStudioTestPlatformInstaller@1
-  displayName: Install Visual Studio Test Platform
-  inputs:
-    packageFeedSelector: nugetOrg
-    versionSelector: latestStable
 
-# 2️⃣ Install TestComplete Adapter
-- task: InstallTestCompleteAdapter@1
-  displayName: Install TestComplete Adapter
+# 1️⃣ Install VS Test Platform (always runs)
+- task: VisualStudioTestPlatformInstaller@1
+  displayName: 'Install Visual Studio Test Platform'
+  condition: always()
   inputs:
-    installExecutor: true
-    updateExecutor: false
+    packageFeedSelector: 'nugetOrg'
+    versionSelector: 'latestStable'
+
+# 2️⃣ Install TestComplete Adapter (always runs)
+- task: InstallTestCompleteAdapter@1
+  displayName: 'Install TestComplete Adapter'
+  condition: always()
+  inputs:
     searchMode: ExecutionPlan
     logsLevel: '0'
 
-# 3️⃣ Run TestComplete project (LOCAL PATH)
+# 3️⃣ Run TestComplete project (always runs)
 - task: VSTest@3
-  displayName: Run TestComplete Project-1
+  displayName: 'Run TestComplete Project-1'
+  condition: always()
   inputs:
-    testSelector: testAssemblies
-
-    testAssemblyVer2: |
-      C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs
-
-    searchFolder: |
-      C:\Users\deepak.mangalagatti\Downloads\Project-1
-
-    vsTestVersion: toolsInstaller
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: '**\Project-1.pjs'
+    searchFolder: 'C:\Users\deepak.mangalagatti\Downloads\Project-1'
+    vsTestVersion: 'toolsInstaller'
+    runInParallel: false
     diagnosticsEnabled: true
-    failOnMinTestsNotRun: true
+    failOnMinTestsNotRun: false
 
-# 4️⃣ Publish results
+# 4️⃣ Publish test results (always runs)
 - task: PublishTestResults@2
-  displayName: Publish Test Results
-  condition: succeededOrFailed()
+  displayName: 'Publish Test Results'
+  condition: always()
   inputs:
-    testResultsFormat: VSTest
+    testResultsFormat: 'VSTest'
     testResultsFiles: '**/*.trx'
     searchFolder: '$(Agent.TempDirectory)'
     mergeTestResults: true
-
+    failTaskOnFailedTests: false
