@@ -10,7 +10,7 @@ pool:
 
 steps:
 
-# 1️⃣ Install VS Test Platform (always runs)
+# 1️⃣ Install VS Test Platform
 - task: VisualStudioTestPlatformInstaller@1
   displayName: 'Install Visual Studio Test Platform'
   condition: always()
@@ -18,7 +18,7 @@ steps:
     packageFeedSelector: 'nugetOrg'
     versionSelector: 'latestStable'
 
-# 2️⃣ Install TestComplete Adapter (always runs)
+# 2️⃣ Install TestComplete Adapter
 - task: InstallTestCompleteAdapter@1
   displayName: 'Install TestComplete Adapter'
   condition: always()
@@ -26,7 +26,7 @@ steps:
     searchMode: ExecutionPlan
     logsLevel: '0'
 
-# 3️⃣ Run TestComplete project (always runs)
+# 3️⃣ Run TestComplete project (THIS WAS MISSING vsTestVersion)
 - task: VSTest@3
   displayName: 'Run TestComplete Project-1'
   condition: always()
@@ -34,12 +34,12 @@ steps:
     testSelector: 'testAssemblies'
     testAssemblyVer2: '**\Project-1.pjs'
     searchFolder: 'C:\Users\deepak.mangalagatti\Downloads\Project-1'
-    vsTestVersion: 'toolsInstaller'
+    vsTestVersion: 'toolsInstaller'   # 🔥 REQUIRED LINE
     runInParallel: false
     diagnosticsEnabled: true
     failOnMinTestsNotRun: false
 
-# 4️⃣ Publish test results (always runs)
+# 4️⃣ Publish results (trx)
 - task: PublishTestResults@2
   displayName: 'Publish Test Results'
   condition: always()
@@ -49,3 +49,4 @@ steps:
     searchFolder: '$(Agent.TempDirectory)'
     mergeTestResults: true
     failTaskOnFailedTests: false
+
