@@ -10,47 +10,26 @@ pool:
 
 steps:
 
-# 1️⃣ Install VS Test Platform
-- task: VisualStudioTestPlatformInstaller@1
-  displayName: 'Install Visual Studio Test Platform'
+# 1️⃣ Run TestComplete project (CLI – RELIABLE)
+- script: |
+    echo Running TestComplete Project-1
+
+    "C:\Program Files (x86)\SmartBear\TestComplete 15\x64\Bin\TestComplete.exe" ^
+    "C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs" ^
+    /run ^
+    /exit ^
+    /SilentMode ^
+    /ExportLog:"C:\temp\tcLogs\TestCompleteResult.mht"
+
+    exit /b %ERRORLEVEL%
+  displayName: "Run TestComplete Project-1"
+  failOnStderr: true
+
+# 2️⃣ Publish TestComplete log as artifact
+- task: PublishPipelineArtifact@1
+  displayName: "Publish TestComplete Log"
   condition: always()
   inputs:
-    packageFeedSelector: 'nugetOrg'
-    versionSelector: 'latestStable'
-
-# 2️⃣ Install TestComplete Adapter
-- task: InstallTestCompleteAdapter@1
-  displayName: 'Install TestComplete Adapter'
-  condition: always()
-  inputs:
-    searchMode: ExecutionPlan
-    logsLevel: '0'
-
-# 3️⃣ Run TestComplete project (FIXED)
-- task: VSTest@3
-  displayName: 'Run TestComplete Project-1'
-  condition: always()
-  inputs:
-    testSelector: 'testAssemblies'
-
-    # 🔴 MUST BE EXPLICIT FILE
-    testAssemblyVer2: 'C:\Users\deepak.mangalagatti\Downloads\Project-1\Project-1.pjs'
-    searchFolder: 'C:\Users\deepak.mangalagatti\Downloads\Project-1'
-
-    # 🔴 REQUIRED FOR SELF-HOSTED AGENT
-    vstestLocationMethod: 'toolsInstaller'
-    vsTestVersion: 'toolsInstaller'
-
-    diagnosticsEnabled: true
-    runInParallel: false
-    failOnMinTestsNotRun: false
-
-# 4️⃣ Publish test results to Azure DevOps Test Runs
-- task: PublishTestResults@2
-  displayName: 'Publish Test Results'
-  condition: always()
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
-    searchFolder: '$(Agent.TempDirectory)'
-    mergeTestResults: true
+    targetPath: 'C:\temp\tcLogs'
+    artifact: 'TestCompleteLogs'
+    publishLocation: 'pipeline'
